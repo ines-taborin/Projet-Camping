@@ -8,7 +8,7 @@
         <!-- MENUS -->
         <ul class="menu">
             <li><RouterLink to="/">Accueil</RouterLink></li>
-            <li><RouterLink to="/equipes">Équipes</RouterLink></li>
+            <li><RouterLink to="/connexion">Connexion</RouterLink></li>
         </ul>
     </nav>
 </template>

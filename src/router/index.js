@@ -1,8 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Accueil from '../views/Accueil.vue'
-import Equipes from '../views/Equipes.vue'
-import Ajout from '../views/Ajout.vue'
-import Details from '../views/Details-equipe.vue'
+import Connexion from '../views/Connexion.vue'
 import Erreur from '../views/Erreur.vue'
 
 const router = createRouter({
@@ -14,19 +12,9 @@ const router = createRouter({
       component: Accueil
     },
     {
-      path: '/equipes',
-      name: 'equipes',
-      component: Equipes
-    },
-    {
-      path: '/equipes/ajout',
-      name: 'ajout-equipe',
-      component: Ajout
-    },
-    {
-      path: '/details-equipe/:id',
-      name: 'details-equipe',
-      component: Details
+      path: '/connexion',
+      name: 'connexion',
+      component: Connexion
     },
     {
       path: '/:pathMatch(.*)*',

@@ -1,8 +1,8 @@
 <template>
     <header>
         <div>
-            <h1>Ligue eSport</h1>
-            <P>Le jeu à un autre niveau</P>
+            <h1>Centre de Loisir</h1>
+            <P>" ON PREND L'AIR "</P>
         </div>
     </header>
     <main>
@@ -32,6 +32,7 @@
                 </div>
             </div>
         </div>
+       
     </main>
 </template>
 
