@@ -9,12 +9,17 @@
         </div>
     </div>
 
-
-    <!-- CONNEXION AVEC EMAIL ET MOT DE PASSE -->
-    <div v-if="storeUser.connecte == false">
-        <form v-on:submit.prevent="seConnecter" class="max-w-sm mx-auto">
+    <!-- CREER UN COMPTE -->
+    <div class="p-5">
+        <form v-on:submit.prevent="creerCompte" class="max-w-sm mx-auto">
             <div class="mb-5">
-                <h1 class="block mb-2 text-lg font-bold text-green-900">Se connecter</h1>
+                <h1 class="block mb-2 text-lg font-bold text-green-900">Créer un compte</h1>
+            </div>
+            <div class="mb-5">
+                <label for="email" class="block mb-2 text-sm font-medium text-green-900">Nom</label>
+                <input type="text" id="nom"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-800 focus:border-blue-500 block w-full p-2.5"
+                    v-model="nom" required />
             </div>
             <div class="mb-5">
                 <label for="email" class="block mb-2 text-sm font-medium text-green-900">Your email</label>
@@ -30,18 +35,20 @@
                     v-model="pwd" required />
             </div>
 
-            <button type="submit" value="Se connecter"
-                class="text-white focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-green-800 hover:bg-green-700 focus:ring-green-800">Se
-                connecter</button> <br><button class="text-white focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-green-800 hover:bg-green-700 focus:ring-green-800"><RouterLink to="/register">Créer un compte</RouterLink></button>
+            <button type="submit" value="Créer un compte"
+                class="text-white focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-green-800 hover:bg-green-700 focus:ring-green-800">Créer
+                un compte</button>
         </form>
-        
     </div>
+
+
+    
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import { auth } from "@/firebase";
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from 'firebase/auth';
 import { useUserStore } from '../store/storeUser';
 
 const nom = ref("")
@@ -50,14 +57,19 @@ const pwd = ref("")
 
 const storeUser = useUserStore()
 
-const seConnecter = async () => {
+const creerCompte = async () => {
     try {
-        const result = await signInWithEmailAndPassword(auth, email.value, pwd.value)
+        const result = await createUserWithEmailAndPassword(auth, email.value, pwd.value);
         storeUser.connexion(result.user)
-    } catch (error) {
-        console.error("Échec de la connexion", error);
+        connecte.value = true
+        console.log(utilisateur.value);
+    }
+    catch (error) {
+        console.error("Échec de la création de l'utilisateur", error);
     }
 }
+
+
 
 const deconnexion = async () => {
     try {

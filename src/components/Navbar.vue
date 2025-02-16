@@ -2,7 +2,7 @@
     <nav class="navbar">
         <!-- LOGO -->
         <div class="logo">
-            <img src="../../public/logo_camping.png" alt="logo camping">
+            <img src="/logo_camping.png" alt="logo camping">
         </div>
 
         <!-- MENUS -->
@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import { RouterLink } from 'vue-router';
 
 
 </script>
