@@ -1,7 +1,7 @@
 <template>
-    <!-- Une fois connecter -->
 
     <div class="max-w-sm mx-auto">
+        <!-- Si l'utilisateur est connecté -->
         <div v-if="storeUser.connecte" class="mb-5">
             <h1 class="block mb-2 text-lg font-bold text-green-900">Bonjour {{ storeUser.utilisateur.displayName }}</h1>
             <button @click="deconnexion"
@@ -32,14 +32,18 @@
 
             <button type="submit" value="Se connecter"
                 class="text-white focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-green-800 hover:bg-green-700 focus:ring-green-800">Se
-                connecter</button> <br><button class="text-white focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-green-800 hover:bg-green-700 focus:ring-green-800"><RouterLink to="/register">Créer un compte</RouterLink></button>
+                connecter</button> <br><button
+                class="text-white focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-green-800 hover:bg-green-700 focus:ring-green-800">
+                <RouterLink to="/register">Créer un compte</RouterLink>
+            </button>
         </form>
-        
+
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router'; // Import du router
 import { auth } from "@/firebase";
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { useUserStore } from '../store/storeUser';
@@ -49,11 +53,17 @@ const email = ref("")
 const pwd = ref("")
 
 const storeUser = useUserStore()
+const router = useRouter(); // Initialisation du router
 
+// Fonction de connexion
 const seConnecter = async () => {
     try {
         const result = await signInWithEmailAndPassword(auth, email.value, pwd.value)
-        storeUser.connexion(result.user)
+        storeUser.connexion(result.user);
+
+        // Redirection vers l'accueil après connexion
+        router.push("/");
+
     } catch (error) {
         console.error("Échec de la connexion", error);
     }

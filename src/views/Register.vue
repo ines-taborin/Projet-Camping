@@ -42,13 +42,14 @@
     </div>
 
 
-    
+
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import { auth } from "@/firebase";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from 'firebase/auth';
+import { useRouter } from 'vue-router'; // Import du router
+import { createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 import { useUserStore } from '../store/storeUser';
 
 const nom = ref("")
@@ -56,6 +57,8 @@ const email = ref("")
 const pwd = ref("")
 
 const storeUser = useUserStore()
+const router = useRouter(); // Initialisation du router
+
 
 const creerCompte = async () => {
     try {
@@ -63,6 +66,9 @@ const creerCompte = async () => {
         storeUser.connexion(result.user)
         connecte.value = true
         console.log(utilisateur.value);
+
+        // Redirection vers l'accueil après création compte
+        router.push("/");
     }
     catch (error) {
         console.error("Échec de la création de l'utilisateur", error);
