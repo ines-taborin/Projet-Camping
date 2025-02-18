@@ -1,18 +1,20 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { computed, reactive, ref } from "vue";
 
 export const useUserStore = defineStore('user', ()=>{
-    const utilisateur = ref({})
-    const connecte = ref(false)
+    const utilisateur = reactive({});
+    const connecte = ref(false);
+    const admin = ref(false);
 
     const connexion = (user)=>{
         utilisateur.value = user
-        connecte.value = true
+        connecte.value = true;
     }
 
     const deconnexion = ()=>{
         utilisateur.value = null
-        connecte.value = false
+        connecte.value = false;
+        admin.value = false;
     }
 
     return {utilisateur, connecte, connexion, deconnexion}

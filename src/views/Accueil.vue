@@ -19,10 +19,16 @@
                     <p><strong>Date :</strong> {{ activite.date }}</p>
                     <p><strong>Heure :</strong> {{ activite.heure }}</p>
                     
+                    <div class="mt-3">
                     <!-- Bouton "S'inscrire" visible uniquement pour les adhérents connectés -->
-                    <button v-if="storeUser.connecte" @click="ajouterAuPanier(activite)">
-                        S'inscrire
+                    <button v-if="storeUser.connecte || storeUser.admin" @click="ajouterAuPanier(activite)">
+                        Inscription
                     </button>
+                    <!-- Bouton "S'inscrire" visible uniquement pour les adhérents connectés -->
+                    <RouterLink class="btn cursor-pointer" to="/connexion" v-else >
+                        Connexion
+                    </RouterLink>
+                    </div>
                 </div>
             </div>
         </div>
@@ -113,8 +119,8 @@ header p {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-button {
-    margin-top: 10px;
+button,
+.btn {
     padding: 8px 12px;
     background-color: #28a745;
     color: white;

@@ -1,19 +1,6 @@
 <template>
-    <div class="max-w-sm mx-auto">
-        <!-- Si l'utilisateur est connecté -->
-        <div v-if="storeUser.connecte || adminConnecte" class="mb-5">
-            <h1 class="block mb-2 text-lg font-bold text-green-900">
-                Bonjour {{ adminConnecte ? "Administrateur" : storeUser.utilisateur.displayName }}
-            </h1>
-            <button @click="deconnexion"
-                class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-green-800 hover:bg-green-700 focus:ring-green-800">
-                Déconnexion
-            </button>
-        </div>
-    </div>
-
     <!-- FORMULAIRE DE CONNEXION -->
-    <div v-if="!storeUser.connecte && !adminConnecte">
+    <div >
         <form @submit.prevent="seConnecter" class="max-w-sm mx-auto">
             <div class="mb-5">
                 <h1 class="block mb-2 text-lg font-bold text-green-900">Se connecter</h1>
@@ -22,7 +9,7 @@
             <!-- Champ Email -->
             <div class="mb-5">
                 <label for="email" class="block mb-2 text-sm font-medium text-green-900">Votre email</label>
-                <input type="email" id="email" v-model="userEmailemail"
+                <input type="email" id="email" v-model="userEmail"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-800 focus:border-blue-500 block w-full p-2.5"
                     :class="{ 'border-red-500': v$.email.$error }" />
                 <p v-if="v$.email.$error" class="text-red-500 text-xs mt-1">
@@ -41,16 +28,12 @@
                 </p>
             </div>
 
-            <button type="submit"
-                class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-green-800 hover:bg-green-700 focus:ring-green-800">
-                Se connecter
-            </button>
+            <div class="flex items-center justify-between">
+                <RouterLink to="/register" class="text-white focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-gray-400 hover:bg-gray-500 focus:ring focus:ring-gray-600 focus:ring-offset-2">Créer un compte</RouterLink>
 
-            <br>
-            <button
-                class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-green-800 hover:bg-green-700 focus:ring-green-800">
-                <RouterLink to="/register">Créer un compte</RouterLink>
-            </button>
+            <input type="submit"
+                class="cursor-pointer text-white focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-green-800 hover:bg-green-700 focus:ring focus:ring-green-800 focus:ring-offset-2" value="Se connecter">
+            </div>
         </form>
     </div>
 </template>
@@ -75,7 +58,7 @@ const rules = {
     email: { required, email },
     pwd: { required, minLength: minLength(4) }
 };
-const v$ = useVuelidate(rules, { email: userEmail, pwd });
+const v$ = useVuelidate(rules, { email: userEmail, pwd: pwd });
 
 // Vérifier si l'admin est déjà connecté
 onMounted(() => {
@@ -91,33 +74,24 @@ const seConnecter = async () => {
     }
 
     if (userEmail.value === "admin@admin.com" && pwd.value === "admin123") {
+        const user = {
+            displayName: "Administrateur",
+            email: "admin@admin.com",
+        }
+        storeUser.utilisateur = user;
+        storeUser.admin = true;
         localStorage.setItem("adminLoggedIn", "true");
         adminConnecte.value = true;
         router.push("/admin/dashboard");
+        return;
     } else {
         try {
-            const result = await signInWithEmailAndPassword(auth, email.value, pwd.value);
+            const result = await signInWithEmailAndPassword(auth, userEmail.value, pwd.value);
             storeUser.connexion(result.user);
+            console.log("Utilisateur connecté :", storeUser.utilisateur);
             router.push("/");
         } catch (error) {
             console.error("Échec de la connexion", error);
-        }
-    }
-};
-
-// Fonction de déconnexion
-const deconnexion = async () => {
-    if (adminConnecte.value) {
-        localStorage.removeItem("adminLoggedIn");
-        adminConnecte.value = false;
-        router.push("/");
-    } else {
-        try {
-            await signOut(auth);
-            storeUser.deconnexion();
-            router.push("/");
-        } catch (error) {
-            console.error("Erreur lors de la déconnexion:", error);
         }
     }
 };

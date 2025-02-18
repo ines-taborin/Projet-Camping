@@ -13,18 +13,22 @@
                 <RouterLink to="/panier">Mon Panier</RouterLink>
             </li>
 
-            <li v-if="!storeUser.connecte">
+            <li v-if="storeUser.admin">
+                <RouterLink to="/admin/dashboard">Tableau de bord</RouterLink>
+            </li>
+
+            <li v-if="!storeUser.connecte && !storeUser.admin">
                 <RouterLink to="/connexion">Connexion</RouterLink>
             </li>
 
-            <li v-else>
+            <li v-if="storeUser.connecte || storeUser.admin">
                 <button @click="deconnexion">Déconnexion</button>
             </li>
         </ul>
 
         <!-- Nom de l'adhérent connecté -->
-        <div v-if="storeUser.connecte" class="user-info">
-            <span>Bienvenue, {{ storeUser.utilisateur.displayName }}</span>
+        <div v-if="storeUser.connecte && storeUser.utilisateur" class="user-info">
+            Bienvenue, <span class="text-2xl block">{{ storeUser.utilisateur.value.displayName }}</span>
         </div>
     </nav>
 </template>
@@ -37,7 +41,9 @@ const storeUser = useUserStore();
 const router = useRouter();
 
 const deconnexion = () => {
-    storeUser.deconnexion();
+    storeUser.utilisateur = null
+    storeUser.connecte = false;
+    storeUser.admin = false;
     router.push("/");
 };
 </script>
@@ -47,6 +53,9 @@ const deconnexion = () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
     background-color: #ffffff;
 }
 
@@ -63,6 +72,7 @@ const deconnexion = () => {
 
 .menu {
     display: flex;
+    align-items: center;
     font-size: 18px;
 }
 
@@ -108,7 +118,6 @@ button:hover {
 .user-info {
     font-size: 18px;
     font-weight: bold;
-    margin-right: 20px;
     color: #0e481e;
 }
 </style>

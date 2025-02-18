@@ -49,10 +49,14 @@
                 </p>
             </div>
 
-            <button type="submit"
-                class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-green-800 hover:bg-green-700 focus:ring-green-800">
-                Créer un compte
-            </button>
+            <div class="flex items-center justify-between">
+                <RouterLink to="/connexion"
+                    class="text-white focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-gray-400 hover:bg-gray-500 focus:ring focus:ring-gray-500 focus:ring-offset-2">
+                    Retour à Connexion</RouterLink>
+
+                <input type="submit"
+                    class="cursor-pointer text-white focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-green-800 hover:bg-green-700 focus:ring focus:ring-green-800 focus:ring-offset-2" value="Créer le compte" />
+            </div>
         </form>
     </div>
 </template>
@@ -61,7 +65,7 @@
 import { ref } from 'vue';
 import { auth } from "@/firebase";
 import { useRouter } from 'vue-router';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useUserStore } from '../store/storeUser';
 import useVuelidate from '@vuelidate/core';
 import { required, email as emailValidator, minLength } from '@vuelidate/validators';
@@ -90,6 +94,10 @@ const creerCompte = async () => {
 
     try {
         const result = await createUserWithEmailAndPassword(auth, userEmail.value, pwd.value);
+
+        await updateProfile(result.user, {
+          displayName: nom.value,
+        });
 
         // Stocker l'utilisateur avec l'email
         storeUser.connexion({
