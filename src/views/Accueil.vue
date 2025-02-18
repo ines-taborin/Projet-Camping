@@ -2,7 +2,7 @@
     <header>
         <div>
             <h1>Centre de Loisir</h1>
-            <P>" ON PREND L'AIR "</P>
+            <p>"ON PREND L'AIR"</p>
         </div>
     </header>
     <main>
@@ -15,9 +15,14 @@
                 <div v-for="activite in activites" :key="activite.id" class="card">
                     <h2>{{ activite.nom }}</h2>
                     <p><strong>Type :</strong> {{ activite.type }}</p>
-                    <p><strong>Coût :</strong> {{ activite.cout }} €</p>
+                    <p><strong>Coût :</strong> {{ activite.cout }} $</p>
                     <p><strong>Date :</strong> {{ activite.date }}</p>
                     <p><strong>Heure :</strong> {{ activite.heure }}</p>
+                    
+                    <!-- Bouton "S'inscrire" visible uniquement pour les adhérents connectés -->
+                    <button v-if="storeUser.connecte" @click="ajouterAuPanier(activite)">
+                        S'inscrire
+                    </button>
                 </div>
             </div>
         </div>
@@ -29,10 +34,20 @@ import { ref, onMounted } from "vue";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { getApp } from "firebase/app";
 import { useUserStore } from '../store/storeUser';
+import { usePanierStore } from '../store/usePanierStore';
+import { useToast } from "vue-toastification";
 
 const activites = ref([]);
 const loading = ref(true);
 const storeUser = useUserStore();
+const storePanier = usePanierStore();
+const toast = useToast();
+
+const ajouterAuPanier = (activite) => {
+    storePanier.ajouterAuPanier(activite);
+
+    console.log("Panier actuel :", storePanier.panier); 
+};
 
 onMounted(async () => {
     try {
@@ -49,13 +64,12 @@ onMounted(async () => {
 });
 </script>
 
-<style>
+<style scoped>
 .container {
     max-width: 800px;
     margin: auto;
     text-align: center;
 }
-
 
 header {
     width: 100%;
@@ -75,35 +89,10 @@ header {
     box-sizing: border-box;
 }
 
-
-
 header h1,
 header p {
     margin: 0;
     text-align: end;
-}
-
-.bloc {
-    /* width: 100%; */
-    margin: 30px;
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-}
-
-.blanc {
-    background-color: white;
-}
-
-.text-bloc {
-    font-size: 50px;
-
-}
-
-img {
-    border-radius: 10px;
-    /* height: 300px; */
-    /* width: 50%; */
 }
 
 .title {
@@ -123,4 +112,19 @@ img {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+button {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
 </style>
+
