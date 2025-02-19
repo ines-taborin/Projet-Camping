@@ -88,7 +88,7 @@ const db = getFirestore(getApp());
 const activitesCollection = collection(db, "activites");
 
 const activites = ref([]);
-const activite = ref({ nom: "", type: "", cout: "", date: "", heure: "", id: null });
+const activite = ref({ nom: "", type: "", cout: "", date: "", heure: "" });
 
 // Validation avec Vuelidate
 const rules = {
@@ -139,7 +139,7 @@ const supprimerActivite = async (id) => {
 
 // Réinitialiser le formulaire
 const resetForm = () => {
-    activite.value = { nom: "", type: "", cout: "", date: "", heure: "", id: null };
+    activite.value = { nom: "", type: "", cout: "", date: "", heure: "" };
 };
 
 onMounted(chargerActivites);
