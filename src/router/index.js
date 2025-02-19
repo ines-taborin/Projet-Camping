@@ -1,9 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
+
 import Accueil from "../views/Accueil.vue";
 import Connexion from "../views/Connexion.vue";
 import Register from "../views/Register.vue";
 import Erreur from "../views/Erreur.vue";
 import Panier from "../views/Panier.vue";
+import AdminActivites from "@/views/AdminActivites.vue";
+import { useUserStore } from "@/store/storeUser";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,7 +21,11 @@ const router = createRouter({
       name: "connexion",
       component: Connexion,
     },
-    { path: "/panier", name: "Panier", component: Panier },
+    {
+      path: "/panier",
+      name: "Panier",
+      component: Panier
+    },
     {
       path: "/register",
       name: "register",
@@ -31,16 +38,17 @@ const router = createRouter({
     },
     {
       path: "/admin/dashboard",
-      component: () => import("@/views/AdminActivites.vue")
+      component: AdminActivites,
+      meta: { auth: true },
   },
   ],
 });
 
-router.beforeEach((to, from, next) => {
-  const isAdminLoggedIn = localStorage.getItem("adminLoggedIn");
+router.beforeEach(async (to, from, next) => {
+  const storeUser = useUserStore();
 
-  if (to.meta.requiresAuth && !isAdminLoggedIn) {
-    next("/admin/login");
+  if (to.meta.auth && !storeUser.admin) {
+    return next({ name: "accueil" });
   } else {
     next();
   }
