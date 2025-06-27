@@ -1,6 +1,6 @@
 # 🏕️ Centre de Loisirs – Vue 3 + Firebase + Pinia
 
-Ce projet est une application web développée avec **Vue 3**, **Pinia** et **Firebase**, simulant la page d’accueil d’un centre de loisirs. Il permet d’afficher dynamiquement une liste d’activités issues de Firestore et de permettre aux utilisateurs authentifiés de s’y inscrire via un système de panier.
+Ce projet est une application web développée avec **Vue 3**, **Pinia** et **Firebase**, simulant la page d’accueil d’un centre de loisirs. Il permet d’afficher dynamiquement une liste d’activités issues de Firestore et de permettre aux utilisateurs authentifiés de s’y inscrire via un système de panier et un admin de gérer les réservations.
 
 ---
 
@@ -47,7 +47,7 @@ Ce projet est une application web développée avec **Vue 3**, **Pinia** et **Fi
 - 📦 **Pinia** pour la gestion des états utilisateur et panier
 - ☁️ **Firebase Firestore** pour la base de données
 - 🔒 **Firebase Auth** (si présent dans le reste du projet)
-- 💅 **CSS pur** (ou **Tailwind CSS** si utilisé dans d’autres composants)
+- 💅 **CSS pur**
 - 🍞 **Vue Toastification** pour les messages utilisateur
 - 📁 **Vue Router** pour la navigation
 
