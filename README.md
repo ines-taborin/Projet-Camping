@@ -16,9 +16,9 @@ Ce projet est une application web développée avec **Vue 3**, **Pinia** et **Fi
 
 ## 🖼️ Aperçu
 
-![Aperçu de l'application](./public/screenshot.png)
+![Aperçu de l'application](./public/Screenshot.png)
 
-![Aperçu de l'application](./public/screenshot2.png)
+![Aperçu de l'application](./public/Screenshot2.png)
 
 ---
 
